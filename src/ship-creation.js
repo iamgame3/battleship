@@ -11,3 +11,5 @@ const createShip = (shipLength) => ({
     if (this.isSunk() === true) this.sunk = true;
   },
 });
+
+export default createShip;
