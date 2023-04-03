@@ -14,3 +14,9 @@ test("Places a ship.", () => {
     JSON.stringify(createShip(4))
   );
 });
+
+test("Hits a ship.", () => {
+  const testGameboard = createGameboard();
+  testGameboard.placeShip("a3", "a6");
+  expect(testGameboard.receiveAttack("a4")).toBe("Hit");
+});
