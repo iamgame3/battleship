@@ -20,3 +20,13 @@ test("Hits a ship.", () => {
   testGameboard.placeShip("a3", "a6");
   expect(testGameboard.receiveAttack("a4")).toBe("Hit");
 });
+
+test("Sinks a ship from repeated hits.", () => {
+  const testGameboard = createGameboard();
+  testGameboard.placeShip("a3", "a6");
+  testGameboard.receiveAttack("a3");
+  testGameboard.receiveAttack("a4");
+  testGameboard.receiveAttack("a5");
+  testGameboard.receiveAttack("a6");
+  expect(testGameboard.allSunk()).toBe(true);
+});

@@ -28,7 +28,7 @@ const createGameboard = () => {
         else shipName = "Submarine";
       }
       if (length === 2) shipName = "Destroyer";
-      for (let i = startIndex; i < endIndex; i += 1) {
+      for (let i = startIndex; i < endIndex + 1; i += 1) {
         this.gameboard[i] = shipName;
       }
       this.ships[shipName] = createShip(length);
@@ -42,6 +42,14 @@ const createGameboard = () => {
       }
       this.gameboard[targetedSquare] = "Miss";
       return "Miss";
+    },
+    allSunk() {
+      let allSunk = true;
+      // eslint-disable-next-line no-restricted-syntax
+      for (const ship in this.ships) {
+        if (!this.ships[ship].sunk) allSunk = false;
+      }
+      return allSunk;
     },
   };
 };
