@@ -1,5 +1,5 @@
-import createShip from "./ship-creation";
-import createGameboard from "./gameboard-creation";
+import createShip from "./ship";
+import createGameboard from "./gameboard";
 import { createPlayer, createAI } from "./players";
 
 test("Sinks a ship.", () => {

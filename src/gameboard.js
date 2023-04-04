@@ -1,4 +1,4 @@
-import createShip from "./ship-creation";
+import createShip from "./ship";
 
 const createGameboard = () => {
   const tempPositions = [];
