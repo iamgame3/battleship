@@ -1,5 +1,6 @@
 import createShip from "./ship-creation";
 import createGameboard from "./gameboard-creation";
+import { createPlayer, createAI } from "./players";
 
 test("Sinks a ship.", () => {
   const testShip = createShip(1);
@@ -29,4 +30,16 @@ test("Sinks a ship from repeated hits.", () => {
   testGameboard.receiveAttack("a5");
   testGameboard.receiveAttack("a6");
   expect(testGameboard.allSunk()).toBe(true);
+});
+
+test("Attacks and hits a ship (Player).", () => {
+  const testPlayer = createPlayer();
+  testPlayer.enemyBoard.placeShip("a3", "a6");
+  expect(testPlayer.attack("a5")).toBe("Hit");
+});
+
+test("Attacks and hits or misses a ship (AI).", () => {
+  const testAI = createAI();
+  testAI.enemyBoard.placeShip("a3", "a6");
+  expect(["Hit", "Miss"]).toContain(testAI.attack());
 });
