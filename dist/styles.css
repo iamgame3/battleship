@@ -6,6 +6,12 @@
   font-style: normal;
 }
 
+:root {
+  --light-grey: rgb(80, 80, 80);
+  --light-grey-hover: rgb(90, 90, 90);
+  --light-grey-active: rgb(100, 100, 100);
+}
+
 body {
   background-color: rgb(31, 31, 31);
 }
@@ -23,6 +29,18 @@ label,
 input {
   color: white;
   font-family: "armalite", Arial, Helvetica, sans-serif;
+}
+
+input {
+  margin-top: 8px;
+  padding: 4px;
+  border: 1px solid black;
+  border-radius: 4px;
+  color: black;
+}
+
+input:focus-visible {
+  outline: none;
 }
 
 .title-container {
@@ -44,4 +62,53 @@ input {
 
 .large-title {
   font-size: 90px;
+}
+
+.player-select-title-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.player-select-title {
+  margin-top: 64px;
+  margin-bottom: 0;
+  padding-left: 64px;
+  padding-right: 64px;
+  padding-bottom: 8px;
+  border-bottom: 4px solid var(--light-grey);
+}
+
+.player-select-container {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  height: 35vh;
+}
+
+.player-one-select-container,
+.player-two-select-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.player-two-select-ai {
+  padding-top: 16px;
+  padding-left: 32px;
+  padding-right: 32px;
+  padding-bottom: 16px;
+  border: 1px solid black;
+  border-radius: 8px;
+  background-color: var(--light-grey);
+  cursor: pointer;
+}
+
+.player-two-select-ai:hover {
+  background-color: var(--light-grey-hover);
+}
+
+.player-two-select-ai:active {
+  background-color: var(--light-grey-active);
 }
