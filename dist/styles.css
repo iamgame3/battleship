@@ -6,6 +6,42 @@
   font-style: normal;
 }
 
-p {
+body {
+  background-color: rgb(31, 31, 31);
+}
+
+div,
+p,
+h6,
+h5,
+h4,
+h3,
+h2,
+h1,
+button,
+label,
+input {
+  color: white;
   font-family: "armalite", Arial, Helvetica, sans-serif;
+}
+
+.title-container {
+  margin-top: 64px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.small-title,
+.large-title {
+  margin: 0;
+}
+
+.small-title {
+  font-size: 40px;
+}
+
+.large-title {
+  font-size: 90px;
 }
