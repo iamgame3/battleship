@@ -1,0 +1,11 @@
+@font-face {
+  font-family: "armalite";
+  src: url("armalite.woff2") format("woff2"),
+    url("armalite.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+p {
+  font-family: "armalite", Arial, Helvetica, sans-serif;
+}
