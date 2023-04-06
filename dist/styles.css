@@ -94,7 +94,7 @@ input:focus-visible {
   align-items: center;
 }
 
-.player-two-select-ai {
+.player-two-select-ai-button {
   padding-top: 16px;
   padding-left: 32px;
   padding-right: 32px;
@@ -110,5 +110,31 @@ input:focus-visible {
 }
 
 .player-two-select-ai:active {
+  background-color: var(--light-grey-active);
+}
+
+.game-start-button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.game-start-button {
+  padding-top: 32px;
+  padding-left: 64px;
+  padding-right: 64px;
+  padding-bottom: 32px;
+  border: 2px solid black;
+  border-radius: 16px;
+  background-color: var(--light-grey);
+  font-size: 48px;
+  cursor: pointer;
+}
+
+.game-start-button:hover {
+  background-color: var(--light-grey-hover);
+}
+
+.game-start-button:active {
   background-color: var(--light-grey-active);
 }
