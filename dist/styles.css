@@ -138,3 +138,15 @@ input:focus-visible {
 .game-start-button:active {
   background-color: var(--light-grey-active);
 }
+
+.legend {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding: 32px;
+}
+
+.legend-header {
+  margin: 0;
+}
