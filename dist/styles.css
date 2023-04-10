@@ -13,6 +13,9 @@
 }
 
 body {
+  display: flex;
+  align-items: center;
+  height: 100vh;
   background-color: rgb(31, 31, 31);
 }
 
@@ -41,6 +44,10 @@ input {
 
 input:focus-visible {
   outline: none;
+}
+
+.page-container {
+  width: 100vw;
 }
 
 .title-container {
@@ -144,9 +151,60 @@ input:focus-visible {
   display: flex;
   flex-direction: column;
   gap: 32px;
+  top: 0;
   padding: 32px;
 }
 
-.legend-header {
+.legend-item {
   margin: 0;
+}
+
+.game-grids-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.enemy-grid {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 32px;
+  width: 220px;
+  height: 220px;
+  cursor: pointer;
+}
+
+.enemy-grid-header {
+  position: absolute;
+  margin: 0;
+  top: 35%;
+  left: 115%;
+  width: max-content;
+}
+
+.your-grid {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 64px;
+  width: 420px;
+  height: 420px;
+  cursor: pointer;
+}
+
+.your-grid-header {
+  position: absolute;
+  margin: 0;
+  top: 40%;
+  left: 115%;
+  width: max-content;
+}
+
+.normal-square {
+  width: calc(10% - 2px);
+  height: calc(10% - 2px);
+  border: 1px solid black;
+  background-color: white;
 }
