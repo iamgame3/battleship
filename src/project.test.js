@@ -8,10 +8,16 @@ test("Sinks a ship.", () => {
   expect(testShip.sunk).toBe(true);
 });
 
-test("Places a ship.", () => {
+test("Places a ship horizontally.", () => {
   const testGameboard = createGameboard();
-  testGameboard.placeShip("a3", "a6");
-  expect(JSON.stringify(testGameboard.ships.Battleship)).toBe(
+  expect(JSON.stringify(testGameboard.placeShip("a3", "a5"))).toBe(
+    JSON.stringify(createShip(3))
+  );
+});
+
+test("Places a ship vertically.", () => {
+  const testGameboard = createGameboard();
+  expect(JSON.stringify(testGameboard.placeShip("a3", "d3"))).toBe(
     JSON.stringify(createShip(4))
   );
 });

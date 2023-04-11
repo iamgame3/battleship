@@ -16,22 +16,29 @@ const createGameboard = () => {
     positions: tempPositions,
     gameboard: tempGameboard,
     ships: {},
+    subExists: false,
     placeShip(start, end) {
       const startIndex = this.positions.indexOf(start);
       const endIndex = this.positions.indexOf(end);
-      const length = endIndex - startIndex + 1;
+      let length;
+      if ((endIndex - startIndex) % 10 === 0)
+        length = (endIndex - startIndex) / 10 + 1;
+      else length = endIndex - startIndex + 1;
       let shipName;
       if (length === 5) shipName = "Aircraft Carrier";
       if (length === 4) shipName = "Battleship";
       if (length === 3) {
-        if (this.ships.Submarine) shipName = "Cruiser";
-        else shipName = "Submarine";
+        if (this.subExists === false) {
+          this.subExists = true;
+          shipName = "Submarine";
+        } else shipName = "Cruiser";
       }
       if (length === 2) shipName = "Destroyer";
       for (let i = startIndex; i < endIndex + 1; i += 1) {
         this.gameboard[i] = shipName;
       }
       this.ships[shipName] = createShip(length);
+      return this.ships[shipName];
     },
     receiveAttack(coords) {
       const targetedSquare = this.positions.indexOf(coords);
