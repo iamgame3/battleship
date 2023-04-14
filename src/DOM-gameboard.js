@@ -1,3 +1,15 @@
+import createGameboard from "./gameboard";
+
+// TEMP FUNC FOR PLACING SHIPS
+const placeShips = (gameboard) => {
+  gameboard.placeShip("a3", "a7");
+  gameboard.placeShip("g1", "g4");
+  gameboard.placeShip("c8", "e8");
+  gameboard.placeShip("i6", "i8");
+  gameboard.placeShip("b4", "c4");
+  return gameboard.gameboard;
+};
+
 const gameSetup = () => {
   const gameStartButton = document.querySelector(".game-start-button");
   const body = document.querySelector("body");
@@ -19,6 +31,8 @@ const gameSetup = () => {
     const gameGridsContainer = document.createElement("div");
     const enemyGrid = document.createElement("div");
     const yourGrid = document.createElement("div");
+    const yourGameboard = createGameboard();
+    placeShips(yourGameboard);
     for (let i = 0; i < 100; i += 1) {
       const square = document.createElement("div");
       square.classList.add("normal-square");
@@ -32,7 +46,11 @@ const gameSetup = () => {
     gameGridsContainer.classList.add("game-grids-container");
     for (let i = 0; i < 100; i += 1) {
       const square = document.createElement("div");
-      square.classList.add("normal-square");
+      if (yourGameboard.gameboard[i] !== "") {
+        let shipSquare = yourGameboard.gameboard[i];
+        shipSquare = shipSquare.split(" ");
+        square.classList.add(shipSquare[1]);
+      } else square.classList.add("normal-square");
       yourGrid.appendChild(square);
     }
     yourGrid.classList.add("your-grid");

@@ -20,24 +20,40 @@ const createGameboard = () => {
     placeShip(start, end) {
       const startIndex = this.positions.indexOf(start);
       const endIndex = this.positions.indexOf(end);
-      let length;
+      let shipInfo;
       if ((endIndex - startIndex) % 10 === 0)
-        length = (endIndex - startIndex) / 10 + 1;
-      else length = endIndex - startIndex + 1;
+        shipInfo = [(endIndex - startIndex) / 10 + 1, "vert"];
+      else shipInfo = [endIndex - startIndex + 1, "hor"];
       let shipName;
-      if (length === 5) shipName = "Aircraft Carrier";
-      if (length === 4) shipName = "Battleship";
-      if (length === 3) {
+      if (shipInfo[0] === 5) shipName = "Aircraft-Carrier";
+      if (shipInfo[0] === 4) shipName = "Battleship";
+      if (shipInfo[0] === 3) {
         if (this.subExists === false) {
           this.subExists = true;
           shipName = "Submarine";
         } else shipName = "Cruiser";
       }
-      if (length === 2) shipName = "Destroyer";
-      for (let i = startIndex; i < endIndex + 1; i += 1) {
-        this.gameboard[i] = shipName;
+      if (shipInfo[0] === 2) shipName = "Destroyer";
+      if (shipInfo[1] === "hor") {
+        for (let i = startIndex; i < endIndex + 1; i += 1) {
+          if (i === startIndex)
+            this.gameboard[i] = `${shipName} end-left-square`;
+          else if (i === endIndex)
+            this.gameboard[i] = `${shipName} end-right-square`;
+          else {
+            this.gameboard[i] = `${shipName} mid-${shipInfo[1]}-square`;
+          }
+        }
+      } else {
+        for (let i = startIndex; i < endIndex + 1; i += 10) {
+          if (i === startIndex)
+            this.gameboard[i] = `${shipName} end-top-square`;
+          else if (i === endIndex)
+            this.gameboard[i] = `${shipName} end-bottom-square`;
+          else this.gameboard[i] = `${shipName} mid-${shipInfo[1]}-square`;
+        }
       }
-      this.ships[shipName] = createShip(length);
+      this.ships[shipName] = createShip(shipInfo[0]);
       return this.ships[shipName];
     },
     receiveAttack(coords) {
