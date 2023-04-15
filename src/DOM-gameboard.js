@@ -42,7 +42,7 @@ const gameSetup = () => {
       square.addEventListener(
         "click",
         () => {
-          const attackResult = enemy.gameboard.receiveAttack(i);
+          const attackResult = you.attack(enemy.gameboard, i);
           if (attackResult === "Hit") {
             square.style.color = "red";
             square.textContent = "X";
