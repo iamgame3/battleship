@@ -1,4 +1,4 @@
-import createGameboard from "./gameboard";
+import { createPlayer, createAI } from "./players";
 
 // TEMP FUNC FOR PLACING SHIPS
 const placeShips = (gameboard) => {
@@ -30,19 +30,19 @@ const gameSetup = () => {
     body.appendChild(legend);
     const gameGridsContainer = document.createElement("div");
     const enemyGrid = document.createElement("div");
-    const enemyGameboard = createGameboard();
-    placeShips(enemyGameboard);
+    const enemy = createAI();
+    placeShips(enemy.gameboard);
     const yourGrid = document.createElement("div");
-    const yourGameboard = createGameboard();
-    placeShips(yourGameboard);
+    const you = createPlayer();
+    placeShips(you.gameboard);
     for (let i = 0; i < 100; i += 1) {
       const square = document.createElement("div");
       square.classList.add("normal-square");
-      square.setAttribute("data-id", i);
+      square.style.fontSize = "20px";
       square.addEventListener(
         "click",
         () => {
-          const attackResult = enemyGameboard.receiveAttack(i);
+          const attackResult = enemy.gameboard.receiveAttack(i);
           if (attackResult === "Hit") {
             square.style.color = "red";
             square.textContent = "X";
@@ -60,14 +60,39 @@ const gameSetup = () => {
     enemyGridHeader.textContent = "ENEMY GRID";
     enemyGridHeader.classList.add("enemy-grid-header");
     enemyGrid.appendChild(enemyGridHeader);
+    const config = {
+      attributes: true,
+      childList: false,
+      characterData: false,
+      subtree: true,
+    };
+    const callback = () => {
+      setTimeout(() => {
+        const attackResult = enemy.attack(you.gameboard);
+        const attackedSquare = document.querySelector(
+          `[data-id='${attackResult[1]}']`
+        );
+        if (attackResult[0] === "Hit") {
+          attackedSquare.style.color = "red";
+          attackedSquare.textContent = "X";
+        } else {
+          attackedSquare.style.color = "darkgray";
+          attackedSquare.textContent = "/";
+        }
+      }, 500);
+    };
+    const observer = new MutationObserver(callback);
+    observer.observe(enemyGrid, config);
     gameGridsContainer.classList.add("game-grids-container");
     for (let i = 0; i < 100; i += 1) {
       const square = document.createElement("div");
-      if (yourGameboard.gameboard[i]) {
-        let shipSquare = yourGameboard.gameboard[i];
+      if (you.gameboard.gameboard[i]) {
+        let shipSquare = you.gameboard.gameboard[i];
         shipSquare = shipSquare.split(" ");
         square.classList.add(shipSquare[1]);
       } else square.classList.add("normal-square");
+      square.setAttribute("data-id", i);
+      square.style.fontSize = "40px";
       yourGrid.appendChild(square);
     }
     yourGrid.classList.add("your-grid");

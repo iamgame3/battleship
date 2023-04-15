@@ -1,22 +1,22 @@
 import createGameboard from "./gameboard";
 
 const createPlayer = () => ({
-  enemyBoard: createGameboard(),
-  attack(coords) {
-    return this.enemyBoard.receiveAttack(coords);
+  gameboard: createGameboard(),
+  attack(enemyGameboard, coords) {
+    return enemyGameboard.receiveAttack(coords);
   },
 });
 
 const createAI = () => ({
-  enemyBoard: createGameboard(),
-  attack() {
-    const { positions } = this.enemyBoard;
+  gameboard: createGameboard(),
+  attack(enemyGameboard) {
+    const positions = enemyGameboard.gameboard;
     // eslint-disable-next-line no-constant-condition
     while (true) {
-      const randomCoords = positions[Math.round(Math.random * 100)];
-      const possibleAttack = this.enemyBoard.gameboard[randomCoords];
+      const randomNumber = Math.round(Math.random() * 99);
+      const possibleAttack = positions[randomNumber];
       if (possibleAttack !== "Hit" && possibleAttack !== "Miss") {
-        return this.enemyBoard.receiveAttack(possibleAttack);
+        return [enemyGameboard.receiveAttack(randomNumber), randomNumber];
       }
     }
   },
