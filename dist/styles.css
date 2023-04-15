@@ -112,11 +112,11 @@ input:focus-visible {
   cursor: pointer;
 }
 
-.player-two-select-ai:hover {
+.player-two-select-ai-button:hover {
   background-color: var(--light-grey-hover);
 }
 
-.player-two-select-ai:active {
+.player-two-select-ai-button:active {
   background-color: var(--light-grey-active);
 }
 
@@ -173,7 +173,6 @@ input:focus-visible {
   margin-top: 32px;
   width: 220px;
   height: 220px;
-  cursor: pointer;
 }
 
 .enemy-grid-header {
@@ -191,7 +190,6 @@ input:focus-visible {
   margin-top: 64px;
   width: 420px;
   height: 420px;
-  cursor: pointer;
 }
 
 .your-grid-header {

@@ -39,6 +39,7 @@ const gameSetup = () => {
       const square = document.createElement("div");
       square.classList.add("normal-square");
       square.style.fontSize = "20px";
+      square.style.cursor = "pointer";
       square.addEventListener(
         "click",
         () => {
@@ -47,7 +48,7 @@ const gameSetup = () => {
             square.style.color = "red";
             square.textContent = "X";
           } else {
-            square.style.color = "darkgray";
+            square.style.color = "gray";
             square.textContent = "/";
           }
         },
@@ -76,7 +77,7 @@ const gameSetup = () => {
           attackedSquare.style.color = "red";
           attackedSquare.textContent = "X";
         } else {
-          attackedSquare.style.color = "darkgray";
+          attackedSquare.style.color = "gray";
           attackedSquare.textContent = "/";
         }
       }, 500);
