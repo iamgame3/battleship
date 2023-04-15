@@ -30,12 +30,29 @@ const gameSetup = () => {
     body.appendChild(legend);
     const gameGridsContainer = document.createElement("div");
     const enemyGrid = document.createElement("div");
+    const enemyGameboard = createGameboard();
+    placeShips(enemyGameboard);
     const yourGrid = document.createElement("div");
     const yourGameboard = createGameboard();
     placeShips(yourGameboard);
     for (let i = 0; i < 100; i += 1) {
       const square = document.createElement("div");
       square.classList.add("normal-square");
+      square.setAttribute("data-id", i);
+      square.addEventListener(
+        "click",
+        () => {
+          const attackResult = enemyGameboard.receiveAttack(i);
+          if (attackResult === "Hit") {
+            square.style.color = "red";
+            square.textContent = "X";
+          } else {
+            square.style.color = "darkgray";
+            square.textContent = "/";
+          }
+        },
+        { once: true }
+      );
       enemyGrid.appendChild(square);
     }
     enemyGrid.classList.add("enemy-grid");
@@ -46,7 +63,7 @@ const gameSetup = () => {
     gameGridsContainer.classList.add("game-grids-container");
     for (let i = 0; i < 100; i += 1) {
       const square = document.createElement("div");
-      if (yourGameboard.gameboard[i] !== "") {
+      if (yourGameboard.gameboard[i]) {
         let shipSquare = yourGameboard.gameboard[i];
         shipSquare = shipSquare.split(" ");
         square.classList.add(shipSquare[1]);

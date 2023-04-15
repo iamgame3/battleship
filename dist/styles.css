@@ -203,10 +203,14 @@ input:focus-visible {
 }
 
 .normal-square {
-  border: 1px solid black;
-  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: calc(10% - 2px);
   height: calc(10% - 2px);
+  border: 1px solid black;
+  background-color: white;
+  font-size: 20px;
 }
 
 .end-top-square {

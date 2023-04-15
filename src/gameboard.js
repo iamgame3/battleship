@@ -56,14 +56,14 @@ const createGameboard = () => {
       this.ships[shipName] = createShip(shipInfo[0]);
       return this.ships[shipName];
     },
-    receiveAttack(coords) {
-      const targetedSquare = this.positions.indexOf(coords);
-      if (this.gameboard[targetedSquare]) {
-        this.ships[this.gameboard[targetedSquare]].hit();
-        this.gameboard[targetedSquare] = "Hit";
+    receiveAttack(gameboardIndex) {
+      if (this.gameboard[gameboardIndex]) {
+        const attackedShip = this.gameboard[gameboardIndex].split(" ");
+        this.ships[attackedShip[0]].hit();
+        this.gameboard[gameboardIndex] = "Hit";
         return "Hit";
       }
-      this.gameboard[targetedSquare] = "Miss";
+      this.gameboard[gameboardIndex] = "Miss";
       return "Miss";
     },
     allSunk() {
