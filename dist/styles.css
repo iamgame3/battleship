@@ -183,6 +183,18 @@ input:focus-visible {
   width: max-content;
 }
 
+.enemy-grid-sunk {
+  position: absolute;
+  right: 110%;
+  width: max-content;
+  height: 220px;
+}
+
+.sunken-ship-text {
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
 .your-grid {
   position: relative;
   display: flex;
@@ -198,6 +210,11 @@ input:focus-visible {
   top: 40%;
   left: 115%;
   width: max-content;
+}
+
+.your-grid-sunk {
+  width: fit-content;
+  height: 420px;
 }
 
 .normal-square {

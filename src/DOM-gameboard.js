@@ -32,9 +32,15 @@ const gameSetup = () => {
     const enemyGrid = document.createElement("div");
     const enemy = createAI();
     placeShips(enemy.gameboard);
+    const enemyGridSunk = document.createElement("div");
+    enemyGridSunk.classList.add("enemy-grid-sunk");
+    enemyGrid.appendChild(enemyGridSunk);
     const yourGrid = document.createElement("div");
     const you = createPlayer();
     placeShips(you.gameboard);
+    const yourGridSunk = document.createElement("div");
+    yourGridSunk.classList.add("enemy-grid-sunk");
+    yourGrid.appendChild(yourGridSunk);
     for (let i = 0; i < 100; i += 1) {
       const square = document.createElement("div");
       square.classList.add("normal-square");
@@ -44,9 +50,15 @@ const gameSetup = () => {
         "click",
         () => {
           const attackResult = you.attack(enemy.gameboard, i);
-          if (attackResult === "Hit") {
+          if (attackResult[0] === "Hit") {
             square.style.color = "red";
             square.textContent = "X";
+            if (attackResult[1] === true) {
+              const sunkenShipDOM = document.createElement("div");
+              sunkenShipDOM.textContent = `${attackResult[2]} SUNK!`;
+              sunkenShipDOM.classList.add("sunken-ship-text");
+              enemyGridSunk.appendChild(sunkenShipDOM);
+            }
           } else {
             square.style.color = "gray";
             square.textContent = "/";
@@ -73,9 +85,15 @@ const gameSetup = () => {
         const attackedSquare = document.querySelector(
           `[data-id='${attackResult[1]}']`
         );
-        if (attackResult[0] === "Hit") {
+        if (attackResult[0][0] === "Hit") {
           attackedSquare.style.color = "red";
           attackedSquare.textContent = "X";
+          if (attackResult[0][1] === true) {
+            const sunkenShipDOM = document.createElement("div");
+            sunkenShipDOM.textContent = `${attackResult[0][2]} SUNK!`;
+            sunkenShipDOM.classList.add("sunken-ship-text");
+            yourGridSunk.appendChild(sunkenShipDOM);
+          }
         } else {
           attackedSquare.style.color = "gray";
           attackedSquare.textContent = "/";

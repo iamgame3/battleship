@@ -61,10 +61,11 @@ const createGameboard = () => {
         const attackedShip = this.gameboard[gameboardIndex].split(" ");
         this.ships[attackedShip[0]].hit();
         this.gameboard[gameboardIndex] = "Hit";
-        return "Hit";
+        const isSunk = this.ships[attackedShip[0]].isSunk();
+        return ["Hit", isSunk, attackedShip[0]];
       }
       this.gameboard[gameboardIndex] = "Miss";
-      return "Miss";
+      return ["Miss", false];
     },
     allSunk() {
       let allSunk = true;
