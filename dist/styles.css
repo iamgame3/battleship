@@ -217,6 +217,39 @@ input:focus-visible {
   height: 420px;
 }
 
+.winner-popup {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.85);
+  font-size: 70px;
+}
+
+.restart-button {
+  margin-top: 32px;
+  padding-top: 16px;
+  padding-left: 32px;
+  padding-right: 32px;
+  padding-bottom: 16px;
+  border: 1px solid black;
+  border-radius: 8px;
+  background-color: var(--light-grey);
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.restart-button:hover {
+  background-color: var(--light-grey-hover);
+}
+
+.restart-button:active {
+  background-color: var(--light-grey-active);
+}
+
 .normal-square {
   display: flex;
   justify-content: center;

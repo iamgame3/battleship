@@ -58,6 +58,20 @@ const gameSetup = () => {
               sunkenShipDOM.textContent = `${attackResult[2]} SUNK!`;
               sunkenShipDOM.classList.add("sunken-ship-text");
               enemyGridSunk.appendChild(sunkenShipDOM);
+              if (enemy.gameboard.allSunk() === true) {
+                const winnerPopup = document.createElement("div");
+                winnerPopup.textContent = "PLAYER 1 WINS!";
+                winnerPopup.classList.add("winner-popup");
+                const restartButton = document.createElement("button");
+                restartButton.textContent = "BATTLE AGAIN?";
+                restartButton.classList.add("restart-button");
+                restartButton.addEventListener("click", () => {
+                  // eslint-disable-next-line no-restricted-globals
+                  location.reload();
+                });
+                winnerPopup.appendChild(restartButton);
+                body.appendChild(winnerPopup);
+              }
             }
           } else {
             square.style.color = "gray";
@@ -81,6 +95,7 @@ const gameSetup = () => {
     };
     const callback = () => {
       setTimeout(() => {
+        if (enemy.gameboard.allSunk() === true) return;
         const attackResult = enemy.attack(you.gameboard);
         const attackedSquare = document.querySelector(
           `[data-id='${attackResult[1]}']`
@@ -93,6 +108,20 @@ const gameSetup = () => {
             sunkenShipDOM.textContent = `${attackResult[0][2]} SUNK!`;
             sunkenShipDOM.classList.add("sunken-ship-text");
             yourGridSunk.appendChild(sunkenShipDOM);
+            if (you.gameboard.allSunk() === true) {
+              const winnerPopup = document.createElement("div");
+              winnerPopup.textContent = "PLAYER 2 WINS!";
+              winnerPopup.classList.add("winner-popup");
+              const restartButton = document.createElement("button");
+              restartButton.textContent = "BATTLE AGAIN?";
+              restartButton.classList.add("restart-button");
+              restartButton.addEventListener("click", () => {
+                // eslint-disable-next-line no-restricted-globals
+                location.reload();
+              });
+              winnerPopup.appendChild(restartButton);
+              body.appendChild(winnerPopup);
+            }
           }
         } else {
           attackedSquare.style.color = "gray";
