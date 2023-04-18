@@ -1,4 +1,7 @@
 import { createPlayer, createAI } from "./players";
+import explosionSfxSrc from "./sfx/Explosion.webm";
+import waterDropSfxSrc from "./sfx/Water-Drop.webm";
+import victorySfxSrc from "./sfx/Victory.webm";
 
 // TEMP FUNC FOR PLACING SHIPS
 const placeShips = (gameboard) => {
@@ -53,6 +56,10 @@ const gameSetup = () => {
           if (attackResult[0] === "Hit") {
             square.style.color = "red";
             square.textContent = "X";
+            if (enemy.gameboard.allSunk() === false) {
+              const explosionSfx = new Audio(explosionSfxSrc);
+              explosionSfx.play();
+            }
             if (attackResult[1] === true) {
               const sunkenShipDOM = document.createElement("div");
               sunkenShipDOM.textContent = `${attackResult[2]} SUNK!`;
@@ -71,11 +78,15 @@ const gameSetup = () => {
                 });
                 winnerPopup.appendChild(restartButton);
                 body.appendChild(winnerPopup);
+                const victorySfx = new Audio(victorySfxSrc);
+                victorySfx.play();
               }
             }
           } else {
             square.style.color = "gray";
             square.textContent = "/";
+            const waterDropSfx = new Audio(waterDropSfxSrc);
+            waterDropSfx.play();
           }
         },
         { once: true }
@@ -103,6 +114,10 @@ const gameSetup = () => {
         if (attackResult[0][0] === "Hit") {
           attackedSquare.style.color = "red";
           attackedSquare.textContent = "X";
+          if (you.gameboard.allSunk() === false) {
+            const explosionSfx = new Audio(explosionSfxSrc);
+            explosionSfx.play();
+          }
           if (attackResult[0][1] === true) {
             const sunkenShipDOM = document.createElement("div");
             sunkenShipDOM.textContent = `${attackResult[0][2]} SUNK!`;
@@ -121,13 +136,17 @@ const gameSetup = () => {
               });
               winnerPopup.appendChild(restartButton);
               body.appendChild(winnerPopup);
+              const victorySfx = new Audio(victorySfxSrc);
+              victorySfx.play();
             }
           }
         } else {
           attackedSquare.style.color = "gray";
           attackedSquare.textContent = "/";
+          const waterDropSfx = new Audio(waterDropSfxSrc);
+          waterDropSfx.play();
         }
-      }, 500);
+      }, 1000);
     };
     const observer = new MutationObserver(callback);
     observer.observe(enemyGrid, config);
