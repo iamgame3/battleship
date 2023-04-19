@@ -19,6 +19,8 @@ const gameSetup = () => {
   const pageContainer = document.querySelector(".page-container");
 
   gameStartButton.addEventListener("click", () => {
+    let yourName = document.getElementById("player-one").value;
+    if (yourName === "") yourName = "PLAYER 1";
     pageContainer.replaceChildren();
     const legend = document.createElement("div");
     const missLegend = document.createElement("h2");
@@ -67,7 +69,7 @@ const gameSetup = () => {
               enemyGridSunk.appendChild(sunkenShipDOM);
               if (enemy.gameboard.allSunk() === true) {
                 const winnerPopup = document.createElement("div");
-                winnerPopup.textContent = "PLAYER 1 WINS!";
+                winnerPopup.textContent = `${yourName} WINS!`;
                 winnerPopup.classList.add("winner-popup");
                 const restartButton = document.createElement("button");
                 restartButton.textContent = "BATTLE AGAIN?";
@@ -125,7 +127,7 @@ const gameSetup = () => {
             yourGridSunk.appendChild(sunkenShipDOM);
             if (you.gameboard.allSunk() === true) {
               const winnerPopup = document.createElement("div");
-              winnerPopup.textContent = "PLAYER 2 WINS!";
+              winnerPopup.textContent = "AI WINS!";
               winnerPopup.classList.add("winner-popup");
               const restartButton = document.createElement("button");
               restartButton.textContent = "BATTLE AGAIN?";
