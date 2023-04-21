@@ -3,14 +3,57 @@ import explosionSfxSrc from "./sfx/Explosion.webm";
 import waterDropSfxSrc from "./sfx/Water-Drop.webm";
 import victorySfxSrc from "./sfx/Victory.webm";
 
-// TEMP FUNC FOR PLACING SHIPS
-const placeShips = (gameboard) => {
-  gameboard.placeShip("a3", "a7");
-  gameboard.placeShip("g1", "g4");
-  gameboard.placeShip("c8", "e8");
-  gameboard.placeShip("i6", "i8");
-  gameboard.placeShip("b4", "c4");
-  return gameboard.gameboard;
+const randomShips = (playerGameboard) => {
+  for (let i = 0; i < 5; i += 1) {
+    let shipLength;
+    if (i === 0) shipLength = 1;
+    else if (i === 1 || i === 2) shipLength = 2;
+    else if (i === 3) shipLength = 3;
+    else shipLength = 4;
+    const randomSmallNumber = Math.random();
+    if (randomSmallNumber < 0.5) {
+      // eslint-disable-next-line no-constant-condition
+      while (true) {
+        const randomBigNumber = Math.round(Math.random() * 99);
+        if (
+          Math.floor(randomBigNumber / 10) ===
+            Math.floor((randomBigNumber + shipLength) / 10) &&
+          randomBigNumber + shipLength < 100
+        ) {
+          let spaceAvailable = true;
+          for (let j = 0; j < shipLength + 1; j += 1)
+            if (playerGameboard.gameboard[randomBigNumber + j] !== "")
+              spaceAvailable = false;
+          if (spaceAvailable) {
+            playerGameboard.placeShip(
+              playerGameboard.positions[randomBigNumber],
+              playerGameboard.positions[randomBigNumber + shipLength]
+            );
+            break;
+          }
+        }
+      }
+    } else {
+      // eslint-disable-next-line no-constant-condition
+      while (true) {
+        const randomBigNumber = Math.round(Math.random() * 99);
+        if (randomBigNumber + shipLength * 10 < 100) {
+          let spaceAvailable = true;
+          for (let j = 0; j < (shipLength + 1) * 10; j += 10)
+            if (playerGameboard.gameboard[randomBigNumber + j] !== "")
+              spaceAvailable = false;
+          if (spaceAvailable) {
+            playerGameboard.placeShip(
+              playerGameboard.positions[randomBigNumber],
+              playerGameboard.positions[randomBigNumber + shipLength * 10]
+            );
+            break;
+          }
+        }
+      }
+    }
+  }
+  return playerGameboard.gameboard;
 };
 
 const gameSetup = () => {
@@ -36,13 +79,13 @@ const gameSetup = () => {
     const gameGridsContainer = document.createElement("div");
     const enemyGrid = document.createElement("div");
     const enemy = createAI();
-    placeShips(enemy.gameboard);
+    randomShips(enemy.gameboard);
     const enemyGridSunk = document.createElement("div");
     enemyGridSunk.classList.add("enemy-grid-sunk");
     enemyGrid.appendChild(enemyGridSunk);
     const yourGrid = document.createElement("div");
     const you = createPlayer();
-    placeShips(you.gameboard);
+    randomShips(you.gameboard);
     const yourGridSunk = document.createElement("div");
     yourGridSunk.classList.add("enemy-grid-sunk");
     yourGrid.appendChild(yourGridSunk);
