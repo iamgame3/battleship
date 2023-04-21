@@ -12,9 +12,14 @@ const createGameboard = () => {
   for (let i = 0; i < 100; i += 1) {
     tempGameboard.push("");
   }
+  const tempGameboardTwo = [];
+  for (let i = 0; i < 100; i += 1) {
+    tempGameboardTwo.push("");
+  }
   return {
     positions: tempPositions,
     gameboard: tempGameboard,
+    shipPositions: tempGameboardTwo,
     ships: {},
     subExists: false,
     placeShip(start, end) {
@@ -36,6 +41,7 @@ const createGameboard = () => {
       if (shipInfo[0] === 2) shipName = "Destroyer";
       if (shipInfo[1] === "hor") {
         for (let i = startIndex; i < endIndex + 1; i += 1) {
+          this.shipPositions[i] = shipName;
           if (i === startIndex)
             this.gameboard[i] = `${shipName} end-left-square`;
           else if (i === endIndex)
@@ -46,6 +52,7 @@ const createGameboard = () => {
         }
       } else {
         for (let i = startIndex; i < endIndex + 1; i += 10) {
+          this.shipPositions[i] = shipName;
           if (i === startIndex)
             this.gameboard[i] = `${shipName} end-top-square`;
           else if (i === endIndex)

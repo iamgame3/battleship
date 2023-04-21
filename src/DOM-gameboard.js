@@ -106,13 +106,16 @@ const gameSetup = () => {
       characterData: false,
       subtree: true,
     };
+    let lastAttackIndex;
     const callback = () => {
       setTimeout(() => {
         if (enemy.gameboard.allSunk() === true) return;
-        const attackResult = enemy.attack(you.gameboard);
+        const attackResult = enemy.attack(you.gameboard, lastAttackIndex);
         const attackedSquare = document.querySelector(
           `[data-id='${attackResult[1]}']`
         );
+        // eslint-disable-next-line prefer-destructuring
+        lastAttackIndex = attackResult[1];
         if (attackResult[0][0] === "Hit") {
           attackedSquare.style.color = "red";
           attackedSquare.textContent = "X";
