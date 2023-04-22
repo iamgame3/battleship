@@ -1,3 +1,4 @@
+/* eslint-disable no-constant-condition */
 import createGameboard from "./gameboard";
 
 const createPlayer = () => ({
@@ -39,22 +40,34 @@ const createAI = () => ({
           return randomAttack();
         if (
           (squareAbove === undefined || squareAbove === "Miss") &&
-          squareBelow === "Hit"
+          squareBelow === "Hit" &&
+          !enemyGameboard.ships[
+            enemyGameboard.shipPositions[lAttackIndex + 10]
+          ].isSunk()
         )
           return predictShipLocation(lAttackIndex + 10);
         if (
           (squareBelow === undefined || squareBelow === "Miss") &&
-          squareAbove === "Hit"
+          squareAbove === "Hit" &&
+          !enemyGameboard.ships[
+            enemyGameboard.shipPositions[lAttackIndex - 10]
+          ].isSunk()
         )
           return predictShipLocation(lAttackIndex - 10);
         if (
           (squareLeft === undefined || squareLeft === "Miss") &&
-          squareRight === "Hit"
+          squareRight === "Hit" &&
+          !enemyGameboard.ships[
+            enemyGameboard.shipPositions[lAttackIndex + 1]
+          ].isSunk()
         )
           return predictShipLocation(lAttackIndex + 1);
         if (
           (squareRight === undefined || squareRight === "Miss") &&
-          squareLeft === "Hit"
+          squareLeft === "Hit" &&
+          !enemyGameboard.ships[
+            enemyGameboard.shipPositions[lAttackIndex - 1]
+          ].isSunk()
         )
           return predictShipLocation(lAttackIndex - 1);
         if (squareAbove && squareBelow) {
@@ -133,6 +146,66 @@ const createAI = () => ({
             enemyGameboard.receiveAttack(lAttackIndex + 10),
             lAttackIndex + 10,
           ];
+      }
+      if (
+        squareAbove === "Hit" &&
+        enemyGameboard.gameboard[lAttackIndex - 20] === "Hit" &&
+        !enemyGameboard.ships[
+          enemyGameboard.shipPositions[lAttackIndex - 10]
+        ].isSunk()
+      ) {
+        let lAttackIndexCopy = lAttackIndex;
+        while (true) {
+          lAttackIndexCopy -= 10;
+          if (enemyGameboard.gameboard[lAttackIndexCopy] === "Miss")
+            return predictShipLocation(lAttackIndexCopy);
+          if (enemyGameboard.gameboard[lAttackIndexCopy] === undefined) break;
+        }
+      }
+      if (
+        squareLeft === "Hit" &&
+        enemyGameboard.gameboard[lAttackIndex - 2] === "Hit" &&
+        !enemyGameboard.ships[
+          enemyGameboard.shipPositions[lAttackIndex - 1]
+        ].isSunk()
+      ) {
+        let lAttackIndexCopy = lAttackIndex;
+        while (true) {
+          lAttackIndexCopy -= 1;
+          if (enemyGameboard.gameboard[lAttackIndexCopy] === "Miss")
+            return predictShipLocation(lAttackIndexCopy);
+          if (enemyGameboard.gameboard[lAttackIndexCopy] === undefined) break;
+        }
+      }
+      if (
+        squareRight === "Hit" &&
+        enemyGameboard.gameboard[lAttackIndex + 2] === "Hit" &&
+        !enemyGameboard.ships[
+          enemyGameboard.shipPositions[lAttackIndex + 1]
+        ].isSunk()
+      ) {
+        let lAttackIndexCopy = lAttackIndex;
+        while (true) {
+          lAttackIndexCopy += 1;
+          if (enemyGameboard.gameboard[lAttackIndexCopy] === "Miss")
+            return predictShipLocation(lAttackIndexCopy);
+          if (enemyGameboard.gameboard[lAttackIndexCopy] === undefined) break;
+        }
+      }
+      if (
+        squareBelow === "Hit" &&
+        enemyGameboard.gameboard[lAttackIndex + 20] === "Hit" &&
+        !enemyGameboard.ships[
+          enemyGameboard.shipPositions[lAttackIndex + 10]
+        ].isSunk()
+      ) {
+        let lAttackIndexCopy = lAttackIndex;
+        while (true) {
+          lAttackIndexCopy += 10;
+          if (enemyGameboard.gameboard[lAttackIndexCopy] === "Miss")
+            return predictShipLocation(lAttackIndexCopy);
+          if (enemyGameboard.gameboard[lAttackIndexCopy] === undefined) break;
+        }
       }
       if (
         squareAbove === "Hit" &&
