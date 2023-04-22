@@ -108,16 +108,31 @@ input:focus-visible {
   padding-bottom: 16px;
   border: 1px solid black;
   border-radius: 8px;
-  background-color: var(--light-grey);
   cursor: pointer;
 }
 
-.player-two-select-ai-button:hover {
-  background-color: var(--light-grey-hover);
+.player-two-select-ai-button-inactive {
+  background-color: darkred;
 }
 
-.player-two-select-ai-button:active {
-  background-color: var(--light-grey-active);
+.player-two-select-ai-button-inactive:hover {
+  background-color: rgb(119, 0, 0);
+}
+
+.player-two-select-ai-button-inactive:active {
+  background-color: rgb(100, 0, 0);
+}
+
+.player-two-select-ai-button-active {
+  background-color: darkgreen;
+}
+
+.player-two-select-ai-button-active:hover {
+  background-color: rgb(0, 85, 0);
+}
+
+.player-two-select-ai-button-active:active {
+  background-color: rgb(0, 70, 0);
 }
 
 .game-start-button-container {
@@ -215,6 +230,48 @@ input:focus-visible {
 .your-grid-sunk {
   width: fit-content;
   height: 420px;
+}
+
+.pass-device-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.pass-device-header {
+  font-size: 90px;
+}
+
+.pass-device-button {
+  margin-top: 25vh;
+  padding-top: 32px;
+  padding-left: 64px;
+  padding-right: 64px;
+  padding-bottom: 32px;
+  border: 2px solid black;
+  border-radius: 16px;
+  background-color: var(--light-grey);
+  font-size: 48px;
+  cursor: pointer;
+}
+
+.pass-device-button:hover {
+  background-color: var(--light-grey-hover);
+}
+
+.pass-device-button:active {
+  background-color: var(--light-grey-active);
+}
+
+.block-clicks-div {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0);
+  z-index: 0;
 }
 
 .winner-popup {

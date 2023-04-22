@@ -1,69 +1,40 @@
-import { createPlayer, createAI } from "./players";
+import { createPlayer } from "./players";
+import randomShips from "./random-ship-gen";
 import explosionSfxSrc from "./sfx/Explosion.webm";
 import waterDropSfxSrc from "./sfx/Water-Drop.webm";
 import victorySfxSrc from "./sfx/Victory.webm";
 
-const randomShips = (playerGameboard) => {
-  for (let i = 0; i < 5; i += 1) {
-    let shipLength;
-    if (i === 0) shipLength = 1;
-    else if (i === 1 || i === 2) shipLength = 2;
-    else if (i === 3) shipLength = 3;
-    else shipLength = 4;
-    const randomSmallNumber = Math.random();
-    if (randomSmallNumber < 0.5) {
-      // eslint-disable-next-line no-constant-condition
-      while (true) {
-        const randomBigNumber = Math.round(Math.random() * 99);
-        if (
-          Math.floor(randomBigNumber / 10) ===
-            Math.floor((randomBigNumber + shipLength) / 10) &&
-          randomBigNumber + shipLength < 100
-        ) {
-          let spaceAvailable = true;
-          for (let j = 0; j < shipLength + 1; j += 1)
-            if (playerGameboard.gameboard[randomBigNumber + j] !== "")
-              spaceAvailable = false;
-          if (spaceAvailable) {
-            playerGameboard.placeShip(
-              playerGameboard.positions[randomBigNumber],
-              playerGameboard.positions[randomBigNumber + shipLength]
-            );
-            break;
-          }
-        }
-      }
-    } else {
-      // eslint-disable-next-line no-constant-condition
-      while (true) {
-        const randomBigNumber = Math.round(Math.random() * 99);
-        if (randomBigNumber + shipLength * 10 < 100) {
-          let spaceAvailable = true;
-          for (let j = 0; j < (shipLength + 1) * 10; j += 10)
-            if (playerGameboard.gameboard[randomBigNumber + j] !== "")
-              spaceAvailable = false;
-          if (spaceAvailable) {
-            playerGameboard.placeShip(
-              playerGameboard.positions[randomBigNumber],
-              playerGameboard.positions[randomBigNumber + shipLength * 10]
-            );
-            break;
-          }
-        }
-      }
-    }
-  }
-  return playerGameboard.gameboard;
-};
-
-const gameSetup = () => {
-  const gameStartButton = document.querySelector(".game-start-button");
+const twoPlayerGame = () => {
   const body = document.querySelector("body");
   const pageContainer = document.querySelector(".page-container");
+  let playerOneName = document.getElementById("player-one").value;
+  if (playerOneName === "") playerOneName = "PLAYER 1";
+  let playerTwoName = document.getElementById("player-two").value;
+  if (playerTwoName === "") playerTwoName = "PLAYER 2";
+  const playerOne = createPlayer();
+  randomShips(playerOne.gameboard);
+  const playerOneOriginalGameboard = playerOne.gameboard.gameboard.slice(0);
+  const playerTwo = createPlayer();
+  randomShips(playerTwo.gameboard);
+  const playerTwoOriginalGameboard = playerTwo.gameboard.gameboard.slice(0);
 
-  gameStartButton.addEventListener("click", () => {
-    let yourName = document.getElementById("player-one").value;
-    if (yourName === "") yourName = "PLAYER 1";
+  const gameLoop = (playerOneTurn) => {
+    let you;
+    let yourName;
+    let yourOriginalGameboard;
+    let enemy;
+    if (playerOneTurn) {
+      you = playerOne;
+      yourName = playerOneName;
+      yourOriginalGameboard = playerOneOriginalGameboard;
+      enemy = playerTwo;
+    } else {
+      you = playerTwo;
+      yourName = playerTwoName;
+      yourOriginalGameboard = playerTwoOriginalGameboard;
+      enemy = playerOne;
+    }
+
     pageContainer.replaceChildren();
     const legend = document.createElement("div");
     const missLegend = document.createElement("h2");
@@ -78,25 +49,49 @@ const gameSetup = () => {
     body.appendChild(legend);
     const gameGridsContainer = document.createElement("div");
     const enemyGrid = document.createElement("div");
-    const enemy = createAI();
-    randomShips(enemy.gameboard);
     const enemyGridSunk = document.createElement("div");
     enemyGridSunk.classList.add("enemy-grid-sunk");
     enemyGrid.appendChild(enemyGridSunk);
+    // eslint-disable-next-line no-restricted-syntax
+    for (const ship in enemy.gameboard.ships) {
+      if (enemy.gameboard.ships[ship].isSunk()) {
+        const sunkenShipDOM = document.createElement("div");
+        sunkenShipDOM.textContent = `${ship} SUNK!`;
+        sunkenShipDOM.classList.add("sunken-ship-text");
+        enemyGridSunk.appendChild(sunkenShipDOM);
+      }
+    }
     const yourGrid = document.createElement("div");
-    const you = createPlayer();
-    randomShips(you.gameboard);
     const yourGridSunk = document.createElement("div");
     yourGridSunk.classList.add("enemy-grid-sunk");
     yourGrid.appendChild(yourGridSunk);
+    // eslint-disable-next-line no-restricted-syntax
+    for (const ship in you.gameboard.ships) {
+      if (you.gameboard.ships[ship].isSunk()) {
+        const sunkenShipDOM = document.createElement("div");
+        sunkenShipDOM.textContent = `${ship} SUNK!`;
+        sunkenShipDOM.classList.add("sunken-ship-text");
+        yourGridSunk.appendChild(sunkenShipDOM);
+      }
+    }
     for (let i = 0; i < 100; i += 1) {
       const square = document.createElement("div");
       square.classList.add("normal-square");
       square.style.fontSize = "20px";
       square.style.cursor = "pointer";
-      square.addEventListener(
-        "click",
-        () => {
+      if (enemy.gameboard.gameboard[i] === "Hit") {
+        square.style.color = "red";
+        square.textContent = "X";
+      }
+      if (enemy.gameboard.gameboard[i] === "Miss") {
+        square.style.color = "gray";
+        square.textContent = "/";
+      }
+      if (square.textContent === "") {
+        square.addEventListener("click", () => {
+          const blockClicksDiv = document.createElement("div");
+          blockClicksDiv.classList.add("block-clicks-div");
+          pageContainer.appendChild(blockClicksDiv);
           const attackResult = you.attack(enemy.gameboard, i);
           if (attackResult[0] === "Hit") {
             square.style.color = "red";
@@ -133,9 +128,8 @@ const gameSetup = () => {
             const waterDropSfx = new Audio(waterDropSfxSrc);
             waterDropSfx.play();
           }
-        },
-        { once: true }
-      );
+        });
+      }
       enemyGrid.appendChild(square);
     }
     enemyGrid.classList.add("enemy-grid");
@@ -149,65 +143,51 @@ const gameSetup = () => {
       characterData: false,
       subtree: true,
     };
-    let lastAttackIndex;
     const callback = () => {
       setTimeout(() => {
         if (enemy.gameboard.allSunk() === true) return;
-        const attackResult = enemy.attack(you.gameboard, lastAttackIndex);
-        const attackedSquare = document.querySelector(
-          `[data-id='${attackResult[1]}']`
-        );
-        // eslint-disable-next-line prefer-destructuring
-        lastAttackIndex = attackResult[1];
-        if (attackResult[0][0] === "Hit") {
-          attackedSquare.style.color = "red";
-          attackedSquare.textContent = "X";
-          if (you.gameboard.allSunk() === false) {
-            const explosionSfx = new Audio(explosionSfxSrc);
-            explosionSfx.play();
-          }
-          if (attackResult[0][1] === true) {
-            const sunkenShipDOM = document.createElement("div");
-            sunkenShipDOM.textContent = `${attackResult[0][2]} SUNK!`;
-            sunkenShipDOM.classList.add("sunken-ship-text");
-            yourGridSunk.appendChild(sunkenShipDOM);
-            if (you.gameboard.allSunk() === true) {
-              const winnerPopup = document.createElement("div");
-              winnerPopup.textContent = "AI WINS!";
-              winnerPopup.classList.add("winner-popup");
-              const restartButton = document.createElement("button");
-              restartButton.textContent = "BATTLE AGAIN?";
-              restartButton.classList.add("restart-button");
-              restartButton.addEventListener("click", () => {
-                // eslint-disable-next-line no-restricted-globals
-                location.reload();
-              });
-              winnerPopup.appendChild(restartButton);
-              body.appendChild(winnerPopup);
-              const victorySfx = new Audio(victorySfxSrc);
-              victorySfx.play();
-            }
-          }
-        } else {
-          attackedSquare.style.color = "gray";
-          attackedSquare.textContent = "/";
-          const waterDropSfx = new Audio(waterDropSfxSrc);
-          waterDropSfx.play();
-        }
-      }, 1000);
+        pageContainer.replaceChildren();
+        body.removeChild(legend);
+        const passDeviceContainer = document.createElement("div");
+        passDeviceContainer.classList.add("pass-device-container");
+        const passDeviceHeader = document.createElement("h1");
+        passDeviceHeader.classList.add("pass-device-header");
+        passDeviceHeader.textContent = "PASS DEVICE";
+        const passDeviceButton = document.createElement("button");
+        passDeviceButton.classList.add("pass-device-button");
+        passDeviceButton.textContent = "DONE";
+        passDeviceContainer.appendChild(passDeviceHeader);
+        passDeviceContainer.appendChild(passDeviceButton);
+        pageContainer.appendChild(passDeviceContainer);
+
+        passDeviceButton.addEventListener("click", () => {
+          // eslint-disable-next-line no-param-reassign
+          if (playerOneTurn) playerOneTurn = false;
+          // eslint-disable-next-line no-param-reassign
+          else playerOneTurn = true;
+          gameLoop(playerOneTurn);
+        });
+      }, 1500);
     };
     const observer = new MutationObserver(callback);
     observer.observe(enemyGrid, config);
     gameGridsContainer.classList.add("game-grids-container");
     for (let i = 0; i < 100; i += 1) {
       const square = document.createElement("div");
-      if (you.gameboard.gameboard[i]) {
-        let shipSquare = you.gameboard.gameboard[i];
+      if (yourOriginalGameboard[i] !== "") {
+        let shipSquare = yourOriginalGameboard[i];
         shipSquare = shipSquare.split(" ");
         square.classList.add(shipSquare[1]);
       } else square.classList.add("normal-square");
-      square.setAttribute("data-id", i);
       square.style.fontSize = "40px";
+      if (you.gameboard.gameboard[i] === "Hit") {
+        square.style.color = "red";
+        square.textContent = "X";
+      }
+      if (you.gameboard.gameboard[i] === "Miss") {
+        square.style.color = "gray";
+        square.textContent = "/";
+      }
       yourGrid.appendChild(square);
     }
     yourGrid.classList.add("your-grid");
@@ -218,7 +198,10 @@ const gameSetup = () => {
     gameGridsContainer.appendChild(enemyGrid);
     gameGridsContainer.appendChild(yourGrid);
     pageContainer.appendChild(gameGridsContainer);
-  });
+  };
+
+  const playerOneTurn = true;
+  gameLoop(playerOneTurn);
 };
 
-export default gameSetup;
+export default twoPlayerGame;
