@@ -1,21 +1,11 @@
-import { createPlayer } from "./players";
-import randomShips from "./random-ship-gen";
 import explosionSfxSrc from "./sfx/Explosion.webm";
 import waterDropSfxSrc from "./sfx/Water-Drop.webm";
 import victorySfxSrc from "./sfx/Victory.webm";
 
-const twoPlayerGame = () => {
+const twoPlayerGame = (playerOneName, playerOne, playerTwoName, playerTwo) => {
   const body = document.querySelector("body");
   const pageContainer = document.querySelector(".page-container");
-  let playerOneName = document.getElementById("player-one").value;
-  if (playerOneName === "") playerOneName = "PLAYER 1";
-  let playerTwoName = document.getElementById("player-two").value;
-  if (playerTwoName === "") playerTwoName = "PLAYER 2";
-  const playerOne = createPlayer();
-  randomShips(playerOne.gameboard);
   const playerOneOriginalGameboard = playerOne.gameboard.gameboard.slice(0);
-  const playerTwo = createPlayer();
-  randomShips(playerTwo.gameboard);
   const playerTwoOriginalGameboard = playerTwo.gameboard.gameboard.slice(0);
 
   const gameLoop = (playerOneTurn) => {

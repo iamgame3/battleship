@@ -1,5 +1,4 @@
-import aiGame from "./ai-game";
-import twoPlayerGame from "./two-player-game";
+import shipPlacement from "./ship-placement";
 
 const aiSelectButton = document.querySelector(".player-two-select-ai-button");
 let aiPlayer = false;
@@ -19,6 +18,5 @@ aiSelectButton.addEventListener("click", () => {
 const gameStartButton = document.querySelector(".game-start-button");
 
 gameStartButton.addEventListener("click", () => {
-  if (aiPlayer) aiGame();
-  else twoPlayerGame();
+  shipPlacement(aiPlayer);
 });

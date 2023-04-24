@@ -1,14 +1,12 @@
-import { createPlayer, createAI } from "./players";
+import { createAI } from "./players";
 import randomShips from "./random-ship-gen";
 import explosionSfxSrc from "./sfx/Explosion.webm";
 import waterDropSfxSrc from "./sfx/Water-Drop.webm";
 import victorySfxSrc from "./sfx/Victory.webm";
 
-const aiGame = () => {
+const aiGame = (yourName, you) => {
   const body = document.querySelector("body");
   const pageContainer = document.querySelector(".page-container");
-  let yourName = document.getElementById("player-one").value;
-  if (yourName === "") yourName = "PLAYER 1";
   pageContainer.replaceChildren();
   const legend = document.createElement("div");
   const missLegend = document.createElement("h2");
@@ -29,8 +27,6 @@ const aiGame = () => {
   enemyGridSunk.classList.add("enemy-grid-sunk");
   enemyGrid.appendChild(enemyGridSunk);
   const yourGrid = document.createElement("div");
-  const you = createPlayer();
-  randomShips(you.gameboard);
   const yourGridSunk = document.createElement("div");
   yourGridSunk.classList.add("enemy-grid-sunk");
   yourGrid.appendChild(yourGridSunk);

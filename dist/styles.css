@@ -161,6 +161,52 @@ input:focus-visible {
   background-color: var(--light-grey-active);
 }
 
+.ship-placement-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10vh;
+}
+
+.ship-placement-header {
+  margin: 0;
+  font-size: 60px;
+}
+
+.ship-placement-grid {
+  display: flex;
+  flex-wrap: wrap;
+  width: 420px;
+  height: 420px;
+}
+
+.ship-placement-buttons-container {
+  display: flex;
+  justify-content: center;
+  gap: 20vw;
+}
+
+.ship-placement-button {
+  padding-top: 32px;
+  padding-left: 64px;
+  padding-right: 64px;
+  padding-bottom: 32px;
+  border: 1px solid black;
+  border-radius: 16px;
+  background-color: var(--light-grey);
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.ship-placement-button:hover {
+  background-color: var(--light-grey-hover);
+}
+
+.ship-placement-button:active {
+  background-color: var(--light-grey-active);
+}
+
 .legend {
   position: absolute;
   display: flex;
